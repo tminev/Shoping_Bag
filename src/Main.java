@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
 public class Main extends JFrame{
     JPanel panel = new JPanel();
@@ -6,7 +8,8 @@ public class Main extends JFrame{
     double[] prices = {30, 3, 2, 15, 5, 2.50, 8, 7, 4, 6};
 
     JComboBox comboBox = new JComboBox(produkts);
-
+    DefaultTableModel model = new DefaultTableModel();
+    JTable table = new JTable(model);
 
 
     public static void main(String[] args) {
@@ -23,5 +26,13 @@ public class Main extends JFrame{
     public Main() {
         panel.add(comboBox);
         add(panel);
+        this.getContentPane().setLayout(new FlowLayout());
+        JButton buttonAdd = new JButton("add");
+        JButton buttonRemove = new JButton("Remove");
+        add(buttonAdd);
+        model.addColumn("product");
+        model.addColumn("price");
+        add(table);
+        add(buttonRemove);
 }
 }
