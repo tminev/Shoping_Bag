@@ -1,4 +1,6 @@
 import java.awt.FlowLayout;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -11,6 +13,7 @@ public class Main extends JFrame {
     JPanel panel = new JPanel();
     JLabel priceTotalLbl = new JLabel();
     JLabel curPriceLbl = new JLabel();
+    JTextField quantity = new JTextField(10);
 
     DefaultTableModel model = new DefaultTableModel();
     JTable table = new JTable(model);
@@ -21,7 +24,9 @@ public class Main extends JFrame {
 
     public Main() { // add elements
         panel.add(comboBox);
+
         add(panel);
+        add(quantity);
         this.getContentPane().setLayout(new FlowLayout());
         comboBox.addActionListener(event -> showCurPrice());
 
@@ -30,6 +35,8 @@ public class Main extends JFrame {
         add(buttonAdd);
         model.addColumn("product");
         model.addColumn("price");
+        model.addColumn("quantity");
+
         add(table);
         JButton buttonRemove = new JButton("Remove");
         buttonRemove.addActionListener(event -> removeProducts());
@@ -47,15 +54,33 @@ public class Main extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void addProducts() {
-        for (int i = 0; i <produkts.length ; i++) {
-            if (comboBox.getSelectedItem().equals(produkts[i])) {
-                model.addRow(new Object[]{produkts[i], prices[i]});
-                totalPrice += prices[i];
-            }
+    private int quantityIsNumCheck() {
+        Pattern p = Pattern.compile("^\\d+$");
+        Matcher numberMatcher;
+        int quant = 0;
+        numberMatcher = p.matcher(quantity.getText());
+        if (numberMatcher.matches()) {
+            quant = Integer.parseInt(quantity.getText());
+            System.out.println(quant);
+        } else {
+            System.out.println("Invalid Number");
+            quant=0;
         }
-        priceTotalLbl.setText("Total Price: " + totalPrice + " lv");
-        System.out.println(totalPrice);
+        return quant;
+    }
+
+    private void addProducts() {
+        if (quantityIsNumCheck() != 0) {
+            for (int i = 0; i < produkts.length; i++) {
+                if (comboBox.getSelectedItem().equals(produkts[i])) {
+
+                    model.addRow(new Object[]{produkts[i], prices[i], quantityIsNumCheck()});
+                    totalPrice += prices[i];
+                }
+            }
+            priceTotalLbl.setText("Total Price: " + totalPrice + " lv");
+            System.out.println(totalPrice);
+        }
     }
 
     private void removeProducts() {
@@ -64,13 +89,14 @@ public class Main extends JFrame {
         model.removeRow(table.getSelectedRow());
         priceTotalLbl.setText("Total Price: " + totalPrice + " lv");
     }
-    private void showCurPrice(){
 
-        for (int i = 0; i <produkts.length ; i++) {
+    private void showCurPrice() {
+        for (int i = 0; i < produkts.length; i++) {
             if (comboBox.getSelectedItem().equals(produkts[i])) {
-                curPrice=prices[i];
+                curPrice = prices[i];
             }
         }
         curPriceLbl.setText("Current Price: " + curPrice + " lv");
     }
+
 }
