@@ -9,7 +9,7 @@ public class Main extends JFrame {
     double[] prices = {30, 3, 2, 15, 0.25, 2.50, 8, 7, 4, 6}; //database
     double totalPrice = 0;
     double curPrice = 0;
-    int quantity=0;
+    int quantity = 0;
     JComboBox comboBox = new JComboBox(produkts);
     JPanel panel = new JPanel();
     JLabel priceTotalLbl = new JLabel();
@@ -60,7 +60,6 @@ public class Main extends JFrame {
         numberMatcher = p.matcher(quantityField.getText());
         if (numberMatcher.matches()) {
             quantity = Integer.parseInt(quantityField.getText());
-            System.out.println(quantity);
         } else {
             System.out.println("Invalid Number");
             quantity = 0;
@@ -79,7 +78,6 @@ public class Main extends JFrame {
                 }
             }
             priceTotalLbl.setText("Total Price: " + totalPrice + " lv");
-            System.out.println(totalPrice);
         }
     }
 
